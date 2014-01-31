@@ -44,6 +44,16 @@ NAME      := @PACKAGE_NAME@
 VERSION   := @PACKAGE_VERSION@
 BUGREPORT := @PACKAGE_BUGREPORT@
 
+# shared package stuff
+spkg_base = @spkg_base@
+spkg_dir = @spkg_dir@
+spkg_impl = @spkg_impl@
+spkg_impl2 = @spkg_impl2@
+spkg_impldir = @spkg_impldir@
+spkg_includedir = @spkg_includedir@
+spkg_lib = @spkg_lib@
+spkg_libdir = @spkg_libdir@
+
 # paths
 srcdir = @srcdir@
 prefix = @prefix@
@@ -1140,11 +1150,20 @@ help:
 
 install:
 	@echo "installing..."
-	mkdir -p $(exec_prefix)/lib
-	install -m 644 -p $(SHARED_LIB) libliquid.a $(exec_prefix)/lib
-	mkdir -p $(prefix)/include
-	mkdir -p $(prefix)/include/liquid
-	install -m 644 -p $(addprefix include/,$(headers_install)) $(prefix)/include/liquid
+	mkdir -p $(spkg_dir)
+	install -m 644 -p libliquid.spd.xml $(spkg_dir)
+	#mkdir -p $(exec_prefix)/lib
+	mkdir -p $(spkg_impldir)
+	install -m 644 -p libliquid.pc $(spkg_impldir)
+	mkdir -p $(spkg_libdir)	
+	#install -m 644 -p $(SHARED_LIB) libliquid.a $(exec_prefix)/lib
+	install -m 644 -p $(SHARED_LIB) libliquid.a $(spkg_libdir)
+	#mkdir -p $(prefix)/include
+	#mkdir -p $(prefix)/include/liquid
+	mkdir -p $(spkg_includedir)
+	mkdir -p $(spkg_includedir)/liquid
+	#install -m 644 -p $(addprefix include/,$(headers_install)) $(prefix)/include/liquid
+	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)/liquid
 	@echo ""
 	@echo "---------------------------------------------------------"
 	@echo "  liquid-dsp was successfully installed.     "
@@ -1590,6 +1609,8 @@ clean: clean-modules clean-autoscript clean-check clean-bench clean-examples cle
 	$(RM) $(extra_clean)
 	$(RM) libliquid.a
 	$(RM) $(SHARED_LIB)
+	$(RM) libliquid.pc
+	$(RM) libliquid.spd.xml
 
 ##
 ## TARGET : distclean - removes everything except the originally distributed files

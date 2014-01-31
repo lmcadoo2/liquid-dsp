@@ -246,5 +246,18 @@ AC_SUBST(EPSTOPDF)                  # epstopdf
 AC_SUBST(GNUPLOT)                   # gnuplot
 AC_SUBST(PYGMENTIZE)                # pygmentize
 
-AC_CONFIG_FILES([makefile doc/makefile])
+#Shared package stuff
+AC_PREFIX_DEFAULT(${SDRROOT})
+AC_SUBST([spkg_base],[default_impl])
+AC_SUBST([OS_NAME],[`uname -s`])
+AC_SUBST([ARCH],[`uname -p`])
+AC_SUBST([spkg_dir],['${prefix}'/dom/sharedPkgs/$PACKAGE_NAME])
+AC_SUBST([spkg_impl],[${spkg_base}_${ARCH}])
+AC_SUBST([spkg_impl2],['${spkg_base}_${ARCH}'])
+AC_SUBST([spkg_lib],[lib])
+AC_SUBST([spkg_impldir],['${spkg_dir}/${spkg_impl}'])
+AC_SUBST([spkg_libdir],['${spkg_dir}/${spkg_impl}/${spkg_lib}'])
+AC_SUBST([spkg_includedir],['${spkg_dir}/${spkg_impl}/include'])
+
+AC_CONFIG_FILES([makefile doc/makefile libliquid.pc libliquid.spd.xml])
 AC_OUTPUT
