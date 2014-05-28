@@ -46,3 +46,7 @@ src/utility/gentab/count_ones.c
 sandbox/*_test
 sandbox/*_example
 sandbox/*_gentab
+*~
+doc/makefile
+liquid_dsp_v1.pc
+liquid_dsp_v1.spd.xml

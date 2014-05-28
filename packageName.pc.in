@@ -31,9 +31,9 @@ spkg_impldir=@spkg_impldir@
 spkg_libdir=@spkg_libdir@
 spkg_includedir=@spkg_includedir@
 
-Name: libliquid
+Name: @PACKAGE_NAME@_@spkg_variation@
 Description: Libraries for use with component development
 Requires:
 Version: 1.2.0
-Libs: -L${spkg_libdir} -lliquid
+Libs: -L${spkg_libdir} -lliquid_@spkg_variation@
 Cflags: -I${spkg_includedir} 

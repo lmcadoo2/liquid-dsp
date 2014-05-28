@@ -43,6 +43,7 @@
 NAME      := @PACKAGE_NAME@
 VERSION   := @PACKAGE_VERSION@
 BUGREPORT := @PACKAGE_BUGREPORT@
+VARIANT = @spkg_variation@
 
 # shared package stuff
 spkg_base = @spkg_base@
@@ -66,7 +67,7 @@ modulesdir = src
 # programs
 CC = @CC@
 MV	:= mv -f
-RM	:= rm -f
+ARM	:= rm -f
 SED	:= @SED@
 GREP	:= @GREP@
 AR	:= ar
@@ -1119,21 +1120,21 @@ benchmark_sources :=						\
 SHARED_LIB	= @SH_LIB@
 
 # liquid library definition
-libliquid.a: $(objects)
+libliquid_$(VARIANT).a: $(objects)
 	$(AR) $(ARFLAGS) $@ $^
 	$(RANLIB) $@
 
 # darwin
 #
 # gcc -dynamiclib -install_name libliquid.dylib -o libliquid.dylib libmodem.a libutility.a 
-libliquid.dylib: $(objects)
+libliquid_$(VARIANT).dylib: $(objects)
 	$(CC) -dynamiclib -install_name $@ -o $@ $^ $(LDFLAGS)
 
 # linux, et al
-libliquid.so: libliquid.a
+libliquid_$(VARIANT).so: libliquid_$(VARIANT).a
 	$(CC) -shared -Xlinker -soname=$@ -o $@ -Wl,-whole-archive $^ -Wl,-no-whole-archive $(LDFLAGS)
 
-all: libliquid.a $(SHARED_LIB)
+all: libliquid_$(VARIANT).a $(SHARED_LIB)
 
 ##
 ## TARGET : help      - print list of targets (see documentation for more)
@@ -1151,32 +1152,15 @@ help:
 install:
 	@echo "installing..."
 	mkdir -p $(spkg_dir)
-	install -m 644 -p libliquid.spd.xml $(spkg_dir)
-	#mkdir -p $(exec_prefix)/lib
+	install -m 644 -p liquid_dsp_v1.spd.xml $(spkg_dir)
 	mkdir -p $(spkg_impldir)
-	install -m 644 -p libliquid.pc $(spkg_impldir)
 	mkdir -p $(spkg_libdir)	
-	#install -m 644 -p $(SHARED_LIB) libliquid.a $(exec_prefix)/lib
-	install -m 644 -p $(SHARED_LIB) libliquid.a $(spkg_libdir)
-	#mkdir -p $(prefix)/include
-	#mkdir -p $(prefix)/include/liquid
+	install -m 644 -p $(SHARED_LIB) $(spkg_libdir)/
+	install -m 644 -p libliquid_$(VARIANT).a $(spkg_libdir)/
 	mkdir -p $(spkg_includedir)
-	mkdir -p $(spkg_includedir)/liquid
-	#install -m 644 -p $(addprefix include/,$(headers_install)) $(prefix)/include/liquid
-	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)/liquid
-	@echo ""
-	@echo "---------------------------------------------------------"
-	@echo "  liquid-dsp was successfully installed.     "
-	@echo ""
-	@echo "  On some machines (e.g. Linux) you should rebind your"
-	@echo "  libraries by running 'ldconfig' to make the shared"
-	@echo "  object available.  You might also need to modify your"
-	@echo "  LD_LIBRARY_PATH environment variable to include the"
-	@echo "  directory $(exec_prefix)"
-	@echo ""
-	@echo "  Please report bugs to $(BUGREPORT)"
-	@echo "---------------------------------------------------------"
-	@echo ""
+	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)
+	mkdir -p $(spkg_libdir)/pkgconfig
+	install -m 644 -p liquid_dsp_v1.pc $(spkg_libdir)/pkgconfig
 
 ## 
 ## TARGET : uninstall - uninstalls the libraries and header files in the host system
@@ -1185,7 +1169,7 @@ install:
 uninstall:
 	@echo "uninstalling..."
 	$(RM) $(addprefix $(prefix)/include/liquid/, $(headers_install))
-	$(RM) $(exec_prefix)/lib/libliquid.a
+	$(RM) $(exec_prefix)/lib/libliquid_$(VARIANT).a
 	$(RM) $(exec_prefix)/lib/$(SHARED_LIB)
 	@echo "done."
 
@@ -1240,7 +1224,7 @@ $(autotest_prog).o : autotest/autotest.c autotest/autotest.h autotest_include.h
 
 # link the autotest program with the objects
 # NOTE: linked libraries must come _after_ the target program
-$(autotest_prog): $(autotest_prog).o $(autotest_obj) $(autotest_extra_obj) autotest/autotestlib.o libliquid.a
+$(autotest_prog): $(autotest_prog).o $(autotest_obj) $(autotest_extra_obj) autotest/autotestlib.o libliquid_$(VARIANT).a
 	$(CC) $^ -o $@ $(LDFLAGS)
 
 # run the autotest program
@@ -1286,7 +1270,7 @@ $(bench_prog).o: bench/bench.c benchmark_include.h bench/bench.c
 
 # link the benchmark program with the library objects
 # NOTE: linked libraries must come _after_ the target program
-$(bench_prog): $(bench_prog).o $(benchmark_obj) $(benchmark_extra_obj) libliquid.a
+$(bench_prog): $(bench_prog).o $(benchmark_obj) $(benchmark_extra_obj) libliquid_$(VARIANT).a
 	$(CC) $^ -o $(bench_prog) $(BENCH_LDFLAGS)
 
 # run the benchmark program
@@ -1301,7 +1285,7 @@ scripts/benchmark_compare : % : %.c
 bench/fftbench.o : %.o : %.c
 	$(CC) $(BENCH_CFLAGS) $< -c -o $@
 
-bench/fftbench : % : %.o libliquid.a
+bench/fftbench : % : %.o libliquid_$(VARIANT).a
 	$(CC) $^ -o $@ $(BENCH_LDFLAGS)
 
 # clean up the generated files
@@ -1546,7 +1530,7 @@ SANDBOX_LDFLAGS = $(LDFLAGS) -lfftw3f
 # NOTE: linked libraries must come _after_ the target program
 $(sandbox_objects): %.o : %.c
 
-$(sandbox_programs): % : %.o libliquid.a
+$(sandbox_programs): % : %.o libliquid_$(VARIANT).a
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 # clean sandbox
@@ -1561,7 +1545,7 @@ clean-sandbox:
 
 doc : doc/liquid.pdf
 
-doc/liquid.pdf : libliquid.a
+doc/liquid.pdf : libliquid_$(VARIANT).a
 	cd doc ; make
 
 clean-doc :
@@ -1607,10 +1591,10 @@ clean-modules:
 
 clean: clean-modules clean-autoscript clean-check clean-bench clean-examples clean-sandbox clean-doc
 	$(RM) $(extra_clean)
-	$(RM) libliquid.a
+	$(RM) libliquid_$(VARIANT).a
 	$(RM) $(SHARED_LIB)
-	$(RM) libliquid.pc
-	$(RM) libliquid.spd.xml
+	$(RM) liquid_dsp_$(VARIANT).pc
+	$(RM) liquid_dsp_$(VARIANT).spd.xml
 
 ##
 ## TARGET : distclean - removes everything except the originally distributed files

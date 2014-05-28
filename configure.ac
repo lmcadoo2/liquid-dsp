@@ -21,9 +21,9 @@
 # Process with autoconf to generate configure script
 #
 
-AC_INIT([liquid-dsp],[1.2.0],[support@liquidsdr.org])
+AC_INIT([liquid_dsp],[1.2.0],[support@liquidsdr.org])
 AC_CONFIG_SRCDIR([src/libliquid.c])
-
+AC_SUBST([spkg_variation],['v1'])
 # permit auxiliary scripts directory (e.g. config.sub, config.guess, install-sh)
 AC_CONFIG_AUX_DIR(scripts/)
 
@@ -216,11 +216,11 @@ esac
 
 case $target_os in
 darwin*)
-    SH_LIB=libliquid.dylib
+    SH_LIB=libliquid_${spkg_variation}.dylib
     REBIND=""
     ;;
 *)
-    SH_LIB=libliquid.so
+    SH_LIB=libliquid_${spkg_variation}.so
     REBIND=ldconfig
     ;;
 esac
@@ -248,16 +248,21 @@ AC_SUBST(PYGMENTIZE)                # pygmentize
 
 #Shared package stuff
 AC_PREFIX_DEFAULT(${SDRROOT})
-AC_SUBST([spkg_base],[default_impl])
+#change this number to reflect the variation you are creating for this library
+
+#name of the impl the package should use
+AC_SUBST([spkg_base],[cpp])
 AC_SUBST([OS_NAME],[`uname -s`])
 AC_SUBST([ARCH],[`uname -p`])
-AC_SUBST([spkg_dir],['${prefix}'/dom/sharedPkgs/$PACKAGE_NAME])
-AC_SUBST([spkg_impl],[${spkg_base}_${ARCH}])
-AC_SUBST([spkg_impl2],['${spkg_base}_${ARCH}'])
+AC_SUBST([spkg_dir],['${prefix}'/dom/deps/${PACKAGE_NAME}_${spkg_variation}])
+AC_SUBST([spkg_impl],[${spkg_base}])
+AC_SUBST([spkg_impl2],[${spkg_base}])
 AC_SUBST([spkg_lib],[lib])
 AC_SUBST([spkg_impldir],['${spkg_dir}/${spkg_impl}'])
 AC_SUBST([spkg_libdir],['${spkg_dir}/${spkg_impl}/${spkg_lib}'])
 AC_SUBST([spkg_includedir],['${spkg_dir}/${spkg_impl}/include'])
 
-AC_CONFIG_FILES([makefile doc/makefile libliquid.pc libliquid.spd.xml])
+AC_CONFIG_FILES([makefile doc/makefile])
+AC_CONFIG_FILES([${PACKAGE_NAME}_${spkg_variation}.pc:packageName.pc.in])
+AC_CONFIG_FILES([${PACKAGE_NAME}_${spkg_variation}.spd.xml:packageName.spd.xml.in])
 AC_OUTPUT
