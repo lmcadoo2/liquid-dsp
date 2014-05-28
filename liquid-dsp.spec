@@ -69,7 +69,11 @@ Development headers and libraries for VITA49 Processing. Uses VITA49 Library ver
 
 
 %build
+%if "%{?rhel}" == "6"
 ./bootstrap.sh
+%else
+./reconf
+%endif
 SDRROOT=%{_sdrroot} %configure
 make 
 

@@ -26,7 +26,7 @@ makefile='Makefile'
 
 if [ "$1" == "rpm" ]; then
     # A very simplistic RPM build scenario
-    if [ -e liquid_dsp.spec ]; then
+    if [ -e liquid-dsp.spec ]; then
         mydir=`dirname $0`
         tmpdir=`mktemp -d`
         cp -r ${mydir} ${tmpdir}/liquid_dsp_v1-1.0.0

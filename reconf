@@ -20,6 +20,6 @@
 #
 rm -f config.cache
 
-aclocal -I./scripts
+aclocal -I./scripts -I./m4
 autoconf
 autoheader
