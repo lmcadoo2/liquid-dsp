@@ -1151,16 +1151,16 @@ help:
 
 install:
 	@echo "installing..."
-	mkdir -p $(spkg_dir)
-	install -m 644 -p liquid_dsp_v1.spd.xml $(spkg_dir)
-	mkdir -p $(spkg_impldir)
-	mkdir -p $(spkg_libdir)	
-	install -m 644 -p $(SHARED_LIB) $(spkg_libdir)/
-	install -m 644 -p libliquid_$(VARIANT).a $(spkg_libdir)/
-	mkdir -p $(spkg_includedir)
-	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)
-	mkdir -p $(spkg_libdir)/pkgconfig
-	install -m 644 -p liquid_dsp_v1.pc $(spkg_libdir)/pkgconfig
+	mkdir -p $(DESTDIR)$(spkg_dir)
+	install -m 644 -p liquid_dsp_v1.spd.xml $(DESTDIR)$(spkg_dir)
+	mkdir -p $(DESTDIR)$(spkg_impldir)
+	mkdir -p $(DESTDIR)$(spkg_libdir)	
+	install -m 644 -p $(SHARED_LIB) $(DESTDIR)$(spkg_libdir)/
+	install -m 644 -p libliquid_$(VARIANT).a $(DESTDIR)$(spkg_libdir)/
+	mkdir -p $(DESTDIR)$(spkg_includedir)
+	install -m 644 -p $(addprefix include/,$(headers_install)) $(DESTDIR)$(spkg_includedir)
+	mkdir -p $(DESTDIR)$(spkg_libdir)/pkgconfig
+	install -m 644 -p liquid_dsp_v1.pc $(DESTDIR)$(spkg_libdir)/pkgconfig
 
 ## 
 ## TARGET : uninstall - uninstalls the libraries and header files in the host system
