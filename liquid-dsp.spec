@@ -26,7 +26,7 @@
 #reflects the name in the configure.ac file
 Name:		liquid_dsp_v1
 #must match the version number in the configure.ac file
-Version:	1.0.0
+Version:	1.2.0
 Release:	1%{?dist}
 Summary:	The soft package dependency for REDHAWK of the liquid-dsp library
 Prefix:		%{_sdrroot}
