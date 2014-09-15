@@ -169,6 +169,7 @@ i386|i486|i586|i686|x86|x86_64)
     #   SSE4.1/2:   smmintrin.h
     #   AVX     :   immintrin.h
     AX_EXT
+    AC)SUBST([spkg_base], [cpp])
 
     if [ test "$ax_cv_have_sse41_ext" = yes && test "$ac_cv_header_smmintrin_h" = yes ]; then
         # SSE4.1/2 extensions
@@ -198,6 +199,7 @@ powerpc*)
 arm*)
     # TODO: check for Neon availability
 
+    AC_SUBST([spkg_base], [cpp_arm])
     # ARM architecture : use neon extensions
     MLIBS_DOTPROD="src/dotprod/src/dotprod_cccf.neon.o \
                    src/dotprod/src/dotprod_crcf.neon.o \
@@ -249,9 +251,8 @@ AC_SUBST(PYGMENTIZE)                # pygmentize
 #Shared package stuff
 AC_PREFIX_DEFAULT(${SDRROOT})
 #change this number to reflect the variation you are creating for this library
-
+AC_SUBST([spkg_variation], ['v1'])
 #name of the impl the package should use
-AC_SUBST([spkg_base],[cpp])
 AC_SUBST([OS_NAME],[`uname -s`])
 AC_SUBST([ARCH],[`uname -p`])
 AC_SUBST([spkg_dir],['${prefix}'/dom/deps/${PACKAGE_NAME}_${spkg_variation}])
@@ -260,7 +261,8 @@ AC_SUBST([spkg_impl2],[${spkg_base}])
 AC_SUBST([spkg_lib],[lib])
 AC_SUBST([spkg_impldir],['${spkg_dir}/${spkg_impl}'])
 AC_SUBST([spkg_libdir],['${spkg_dir}/${spkg_impl}/${spkg_lib}'])
-AC_SUBST([spkg_includedir],['${spkg_dir}/${spkg_impl}/include'])
+AC_SUBST([spkg_includedir],['${spkg_dir}/${spkg_impl}/include/liquid'])
+AC_SUBST([spkg_pkgconfig_dir],[${spkg_libdir}/pkgconfig])
 
 AC_CONFIG_FILES([makefile doc/makefile])
 AC_CONFIG_FILES([${PACKAGE_NAME}_${spkg_variation}.pc:packageName.pc.in])

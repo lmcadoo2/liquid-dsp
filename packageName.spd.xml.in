@@ -3,9 +3,9 @@
 This file is protected by Copyright. Please refer to the COPYRIGHT file distributed with this 
 source distribution.
 
-This file is part of REDHAWK Basic Components.
+This file is part of REDHAWK.
 
-REDHAWK Basic Components is free software: you can redistribute it and/or modify it under the terms of 
+REDHAWK is free software: you can redistribute it and/or modify it under the terms of 
 the GNU Lesser General Public License as published by the Free Software Foundation, either 
 version 3 of the License, or (at your option) any later version.
 
@@ -22,10 +22,10 @@ program.  If not, see http://www.gnu.org/licenses/.
   <author>
     <name>REDHAWK</name>
   </author>
-  <implementation id="@spkg_base@">
-    <description>This is the REDHAWK shared package of the liquid-dsp library.</description>
+  <implementation id="cpp">
+    <description>This is the x86/x86_64 Liquid DSP library.</description>
     <code type="SharedLibrary">
-      <localfile name="./@spkg_base@/lib"/>
+      <localfile name="./cpp/lib"/>
     </code>
     <compiler name="/usr/bin/gcc" version="4.1.2"/>
     <programminglanguage name="C++"/>
@@ -33,5 +33,16 @@ program.  If not, see http://www.gnu.org/licenses/.
     <os name="@OS_NAME@"/>
     <processor name="x86"/>
     <processor name="x86_64"/>
+  </implementation>
+  <implementation id="cpp_arm">
+    <description>This is the ARM Liquid DSP library.</description>
+    <code type="SharedLibrary">
+      <localfile name="./cpp_arm/lib"/>
+    </code>
+    <compiler name="/usr/bin/gcc" version="4.1.2"/>
+    <programminglanguage name="C++"/>
+    <humanlanguage name="EN"/>
+    <os name="@OS_NAME"/>
+    <processor name="armv7l"/>
   </implementation>
 </softpkg>

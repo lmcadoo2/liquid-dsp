@@ -46,6 +46,7 @@ BUGREPORT := @PACKAGE_BUGREPORT@
 VARIANT = @spkg_variation@
 
 # shared package stuff
+spkg_variation = @spkg_variation@
 spkg_base = @spkg_base@
 spkg_dir = @spkg_dir@
 spkg_impl = @spkg_impl@
@@ -53,6 +54,7 @@ spkg_impl2 = @spkg_impl2@
 spkg_impldir = @spkg_impldir@
 spkg_includedir = @spkg_includedir@
 spkg_lib = @spkg_lib@
+spkg_pkgconfig_dir = @spkg_pkgconfig_dir@
 spkg_libdir = @spkg_libdir@
 
 # paths
@@ -1151,16 +1153,19 @@ help:
 
 install:
 	@echo "installing..."
-	mkdir -p $(DESTDIR)$(spkg_dir)
-	install -m 644 -p liquid_dsp_v1.spd.xml $(DESTDIR)$(spkg_dir)
-	mkdir -p $(DESTDIR)$(spkg_impldir)
-	mkdir -p $(DESTDIR)$(spkg_libdir)	
-	install -m 644 -p $(SHARED_LIB) $(DESTDIR)$(spkg_libdir)/
-	install -m 644 -p libliquid_$(VARIANT).a $(DESTDIR)$(spkg_libdir)/
-	mkdir -p $(DESTDIR)$(spkg_includedir)
-	install -m 644 -p $(addprefix include/,$(headers_install)) $(DESTDIR)$(spkg_includedir)
-	mkdir -p $(DESTDIR)$(spkg_libdir)/pkgconfig
-	install -m 644 -p liquid_dsp_v1.pc $(DESTDIR)$(spkg_libdir)/pkgconfig
+	mkdir -p $(spkg_dir)
+	install -m 644 -p $(NAME)_$(spkg_variation).spd.xml $(spkg_dir)
+	mkdir -p $(spkg_impldir)
+	mkdir -p $(spkg_libdir)
+	mkdir -p $(spkg_pkgconfig_dir)
+	install -m 644 -p $(NAME)_$(spkg_variation).pc $(spkg_pkgconfig_dir)
+	install -m 644 -p $(SHARED_LIB) libliquid.a $(spkg_libdir)
+	mkdir -p $(spkg_includedir)
+	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)
+	@echo ""
+	@echo "---------------------------------------------------------------------"
+	@echo "$(NAME)_$(spkg_variation) REDHAWK shared package installed successfully"
+
 
 ## 
 ## TARGET : uninstall - uninstalls the libraries and header files in the host system
@@ -1169,8 +1174,8 @@ install:
 uninstall:
 	@echo "uninstalling..."
 	$(RM) $(addprefix $(prefix)/include/liquid/, $(headers_install))
-	$(RM) $(exec_prefix)/lib/libliquid_$(VARIANT).a
-	$(RM) $(exec_prefix)/lib/$(SHARED_LIB)
+	$(RM) $(spkg_libdir)/$(SHARED_LIB)
+	$(RM) $(spkg_libdir)/libliquid.a
 	@echo "done."
 
 ##
@@ -1607,4 +1612,5 @@ distclean: clean distclean-doc
 	$(RM) -r autom4te.cache
 	$(RM) aclocal.m4
 	$(RM) makefile
+	$(RM) $(NAME)_$(spkg_variation).pc $(NAME)_$(spkg_variation).spd.xml
 
