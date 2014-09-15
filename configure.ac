@@ -169,7 +169,7 @@ i386|i486|i586|i686|x86|x86_64)
     #   SSE4.1/2:   smmintrin.h
     #   AVX     :   immintrin.h
     AX_EXT
-    AC)SUBST([spkg_base], [cpp])
+    AC_SUBST([spkg_base], [cpp])
 
     if [ test "$ax_cv_have_sse41_ext" = yes && test "$ac_cv_header_smmintrin_h" = yes ]; then
         # SSE4.1/2 extensions
@@ -206,7 +206,7 @@ arm*)
                    src/dotprod/src/dotprod_rrrf.neon.o \
                    src/dotprod/src/sumsq.o"
     # TODO: check these flags
-    ARCH_OPTION="-ffast-math -mcpu=cortex-a8 -mfloat-abi=softfp -mfpu=neon";;
+    ARCH_OPTION="-marm -mfpu=neon -ftree-vectorize -ffast-math -funsafe-math-optimizations -funsafe-loop-optimizations -ftree-loop-if-convert-stores -mfloat-abi=hard";;
 *)
     # unknown architecture : use portable C version
     MLIBS_DOTPROD="src/dotprod/src/dotprod_cccf.o \

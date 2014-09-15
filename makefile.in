@@ -1159,7 +1159,7 @@ install:
 	mkdir -p $(spkg_libdir)
 	mkdir -p $(spkg_pkgconfig_dir)
 	install -m 644 -p $(NAME)_$(spkg_variation).pc $(spkg_pkgconfig_dir)
-	install -m 644 -p $(SHARED_LIB) libliquid.a $(spkg_libdir)
+	install -m 644 -p $(SHARED_LIB) libliquid_$(spkg_variation).a $(spkg_libdir)
 	mkdir -p $(spkg_includedir)
 	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)
 	@echo ""
@@ -1592,7 +1592,7 @@ clean-modules:
 	$(RM) src/quantization/src/*.o src/quantization/bench/*.o src/quantization/tests/*.o
 	$(RM) src/random/src/*.o       src/random/bench/*.o       src/random/tests/*.o
 	$(RM) src/utility/src/*.o      src/utility/bench/*.o      src/utility/tests/*.o
-	$(RM) libliquid.o
+	$(RM) src/libliquid.o
 
 clean: clean-modules clean-autoscript clean-check clean-bench clean-examples clean-sandbox clean-doc
 	$(RM) $(extra_clean)

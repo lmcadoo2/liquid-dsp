@@ -35,5 +35,5 @@ Name: @PACKAGE_NAME@_@spkg_variation@
 Description: Libraries for use with component development
 Requires:
 Version: @PACKAGE_VERSION@
-Libs: -L${spkg_libdir} -lliquid
+Libs: -L${spkg_libdir} -lliquid_@spkg_variation@
 Cflags: -I${spkg_includedir} 
