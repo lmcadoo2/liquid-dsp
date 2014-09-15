@@ -1153,15 +1153,15 @@ help:
 
 install:
 	@echo "installing..."
-	mkdir -p $(spkg_dir)
-	install -m 644 -p $(NAME)_$(spkg_variation).spd.xml $(spkg_dir)
-	mkdir -p $(spkg_impldir)
-	mkdir -p $(spkg_libdir)
-	mkdir -p $(spkg_pkgconfig_dir)
-	install -m 644 -p $(NAME)_$(spkg_variation).pc $(spkg_pkgconfig_dir)
-	install -m 644 -p $(SHARED_LIB) libliquid_$(spkg_variation).a $(spkg_libdir)
-	mkdir -p $(spkg_includedir)
-	install -m 644 -p $(addprefix include/,$(headers_install)) $(spkg_includedir)
+	mkdir -p $(DESTDIR)$(spkg_dir)
+	install -m 644 -p $(NAME)_$(spkg_variation).spd.xml $(DESTDIR)$(spkg_dir)
+	mkdir -p $(DESTDIR)$(spkg_impldir)
+	mkdir -p $(DESTDIR)$(spkg_libdir)
+	mkdir -p $(DESTDIR)$(spkg_pkgconfig_dir)
+	install -m 644 -p $(NAME)_$(spkg_variation).pc $(DESTDIR)$(spkg_pkgconfig_dir)
+	install -m 644 -p $(SHARED_LIB) libliquid_$(spkg_variation).a $(DESTDIR)$(spkg_libdir)
+	mkdir -p $(DESTDIR)$(spkg_includedir)
+	install -m 644 -p $(addprefix include/,$(headers_install)) $(DESTDIR)$(spkg_includedir)
 	@echo ""
 	@echo "---------------------------------------------------------------------"
 	@echo "$(NAME)_$(spkg_variation) REDHAWK shared package installed successfully"
@@ -1175,7 +1175,7 @@ uninstall:
 	@echo "uninstalling..."
 	$(RM) $(addprefix $(prefix)/include/liquid/, $(headers_install))
 	$(RM) $(spkg_libdir)/$(SHARED_LIB)
-	$(RM) $(spkg_libdir)/libliquid.a
+	$(RM) $(spkg_libdir)/libliquid_$(spkg_variation).a
 	@echo "done."
 
 ##

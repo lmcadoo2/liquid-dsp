@@ -56,13 +56,13 @@ Liquid-DSP Library for REDHAWK.  Uses version 1.2.0.
  * Source Date/Time: __DATETIME__
 
 %package devel
-Summary: REDHAWK VITA49 development package
+Summary: Liquid-DSP Library for REDHAWK
 Group: Development/Languages
 AutoReqProv: No
 Requires: %{name}
 
 %description devel
-Development headers and libraries for VITA49 Processing. Uses VITA49 Library version 2759.
+Liquid-DSP Library for REDHAWAK.  Uses version 1.2.0.
 
 %prep
 %setup -q
@@ -100,7 +100,8 @@ rm -rf %{buildroot}
 %defattr(-,redhawk,redhawk)
 %dir %{_prefix}/dom/deps/liquid_dsp_v1/cpp
 %dir %{_prefix}/dom/deps/liquid_dsp_v1/cpp/include
-%{_prefix}/dom/deps/liquid_dsp_v1/cpp/include/liquid.h 
+%dir %{_prefix}/dom/deps/liquid_dsp_v1/cpp/include/liquid
+%{_prefix}/dom/deps/liquid_dsp_v1/cpp/include/liquid/liquid.h 
 %dir %{_prefix}/dom/deps/liquid_dsp_v1/cpp/lib
 %{_prefix}/dom/deps/liquid_dsp_v1/cpp/lib/libliquid_v1.a
 %{_prefix}/dom/deps/liquid_dsp_v1/cpp/lib/libliquid_v1.so
