@@ -64,9 +64,11 @@ AC_ARG_ENABLE(fftoverride,
 
 AC_ARG_WITH(fec,
     AS_HELP_STRING([--with-fec[=softpkgdir]],[use specified directory as head of fec soft package]),
-    [],
+    [ FEC_ROOT=$withval],
     [ FEC_ROOT=$SDRROOT"/dom/deps/fec_v3"]
 )
+
+# Necessary FEC variables
 FEC_INCLUDE=" -I"$FEC_ROOT"/cpp/include "
 FEC_LIB=" -L"$FEC_ROOT"/cpp/lib "
 CPPFLAGS=$CPPFLAGS$FEC_INCLUDE$FEC_LIB
@@ -261,7 +263,7 @@ AC_SUBST(EPSTOPDF)                  # epstopdf
 AC_SUBST(GNUPLOT)                   # gnuplot
 AC_SUBST(PYGMENTIZE)                # pygmentize
 
-# Guess
+# "Exporting" the variables to use in the makefile
 AC_SUBST(LD_LIBRARY_PATH)
 AC_SUBST(FEC_LIB)
 AC_SUBST(FEC_INCLUDE)
