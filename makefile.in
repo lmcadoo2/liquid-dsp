@@ -45,6 +45,14 @@ VERSION   := @PACKAGE_VERSION@
 BUGREPORT := @PACKAGE_BUGREPORT@
 VARIANT = @spkg_variation@
 
+LD_LIBRARY_PATH = @LD_LIBRARY_PATH@
+export LD_LIBRARY_PATH
+
+FEC_INCLUDE = @FEC_INCLUDE@
+FEC_LIB = @FEC_LIB@
+
+FEC_FLAGS = $(FEC_INCLUDE) $(FEC_LIB)
+
 # shared package stuff
 spkg_variation = @spkg_variation@
 spkg_base = @spkg_base@
@@ -79,8 +87,8 @@ RANLIB	:= ranlib
 INCLUDE_CFLAGS	= $(addprefix -I ,$(include_dirs))
 CONFIG_CFLAGS	= @CFLAGS@ @PROFILE_OPTION@ @DEBUG_OPTION@ @ARCH_OPTION@
 # -g : debugging info
-CFLAGS		+= $(INCLUDE_CFLAGS) -Wall -fPIC $(CONFIG_CFLAGS)
-LDFLAGS		+= @LIBS@
+CFLAGS		+= $(INCLUDE_CFLAGS) -Wall -fPIC $(CONFIG_CFLAGS) $(FEC_FLAGS)
+LDFLAGS		+= @LIBS@ $(FEC_LIB)
 ARFLAGS		= r
 PATHSEP		= /
 

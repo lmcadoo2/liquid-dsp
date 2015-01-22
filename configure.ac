@@ -53,7 +53,7 @@ AC_ARG_ENABLE(debug,
 AC_ARG_ENABLE(profile,
     AS_HELP_STRING([--enable-profile],[profile]),
     [PROFILE_OPTION="-pg"; CLIB="-lc_p"],
-    [PROFILE_OPTION="";    CLIB="-lc"],
+    [PROFILE_OPTION="";    CLIB="-lc"]
 )
 
 AC_ARG_ENABLE(fftoverride,
@@ -61,6 +61,16 @@ AC_ARG_ENABLE(fftoverride,
     [AC_DEFINE(LIQUID_FFTOVERRIDE)],
     [],
 )
+
+AC_ARG_WITH(fec,
+    AS_HELP_STRING([--with-fec[=softpkgdir]],[use specified directory as head of fec soft package]),
+    [],
+    [ FEC_ROOT=$SDRROOT"/dom/deps/fec_v3"]
+)
+FEC_INCLUDE=" -I"$FEC_ROOT"/cpp/include "
+FEC_LIB=" -L"$FEC_ROOT"/cpp/lib "
+CPPFLAGS=$CPPFLAGS$FEC_INCLUDE$FEC_LIB
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH":"$FEC_ROOT"/cpp/lib"
 
 # Check for necessary programs
 AC_PROG_CC
@@ -80,19 +90,19 @@ AC_CHECK_LIB([m],[main], [],[AC_MSG_ERROR(Could not use standard math library)],
 
 # AC_CHECK_FUNC(function, [action-if-found], [action-if-not-found])
 AC_CHECK_FUNC([malloc],  [],[AC_MSG_ERROR(Could not use malloc())])
-AC_CHECK_FUNC([realloc], [],[AC_MSG_ERROR(Could not use realloc())],)
-AC_CHECK_FUNC([free],    [],[AC_MSG_ERROR(Could not use free())],)
-AC_CHECK_FUNC([memset],  [],[AC_MSG_ERROR(Could not use memset())],)
-AC_CHECK_FUNC([memmove], [],[AC_MSG_ERROR(Could not use memove())],)
+AC_CHECK_FUNC([realloc], [],[AC_MSG_ERROR(Could not use realloc())])
+AC_CHECK_FUNC([free],    [],[AC_MSG_ERROR(Could not use free())])
+AC_CHECK_FUNC([memset],  [],[AC_MSG_ERROR(Could not use memset())])
+AC_CHECK_FUNC([memmove], [],[AC_MSG_ERROR(Could not use memove())])
 
-AC_CHECK_FUNC([sinf],    [],[AC_MSG_ERROR(Could not use sinf())],)
-AC_CHECK_FUNC([cosf],    [],[AC_MSG_ERROR(Could not use cosf())],)
-AC_CHECK_FUNC([expf],    [],[AC_MSG_ERROR(Could not use expf())],)
-AC_CHECK_FUNC([cargf],   [],[AC_MSG_ERROR(Could not use cargf())],)
-AC_CHECK_FUNC([cexpf],   [],[AC_MSG_ERROR(Could not use cexpf())],)
-AC_CHECK_FUNC([crealf],  [],[AC_MSG_ERROR(Could not use crealf())],)
-AC_CHECK_FUNC([cimagf],  [],[AC_MSG_ERROR(Could not use cimagf())],)
-AC_CHECK_FUNC([sqrtf],   [],[AC_MSG_ERROR(Could not use sqrtf())],)
+AC_CHECK_FUNC([sinf],    [],[AC_MSG_ERROR(Could not use sinf())])
+AC_CHECK_FUNC([cosf],    [],[AC_MSG_ERROR(Could not use cosf())])
+AC_CHECK_FUNC([expf],    [],[AC_MSG_ERROR(Could not use expf())])
+AC_CHECK_FUNC([cargf],   [],[AC_MSG_ERROR(Could not use cargf())])
+AC_CHECK_FUNC([cexpf],   [],[AC_MSG_ERROR(Could not use cexpf())])
+AC_CHECK_FUNC([crealf],  [],[AC_MSG_ERROR(Could not use crealf())])
+AC_CHECK_FUNC([cimagf],  [],[AC_MSG_ERROR(Could not use cimagf())])
+AC_CHECK_FUNC([sqrtf],   [],[AC_MSG_ERROR(Could not use sqrtf())])
 
 # Check for necessary header files
 AC_CHECK_HEADERS([stdio.h stdlib.h complex.h string.h getopt.h sys/resource.h float.h inttypes.h limits.h stdlib.h string.h unistd.h])
@@ -102,10 +112,13 @@ then
 fi
 
 # Check for optional header files, libraries, programs
-AC_CHECK_HEADERS(fec.h fftw3.h)
+# Check for fftw
+AC_CHECK_HEADERS(fftw3.h)
 AC_CHECK_LIB([fftw3f], [fftwf_plan_dft_1d], [],
              [AC_MSG_WARN(fftw3 library useful but not required)],
              [])
+# Check for the fec soft package, installed for redhawk
+AC_CHECK_HEADERS(fec.h)
 AC_CHECK_LIB([fec], [create_viterbi27], [],
              [AC_MSG_WARN(fec library useful but not required)],
              [])
@@ -247,6 +260,11 @@ AC_SUBST(BIBTEX)                    # bibtex
 AC_SUBST(EPSTOPDF)                  # epstopdf
 AC_SUBST(GNUPLOT)                   # gnuplot
 AC_SUBST(PYGMENTIZE)                # pygmentize
+
+# Guess
+AC_SUBST(LD_LIBRARY_PATH)
+AC_SUBST(FEC_LIB)
+AC_SUBST(FEC_INCLUDE)
 
 #Shared package stuff
 AC_PREFIX_DEFAULT(${SDRROOT})
