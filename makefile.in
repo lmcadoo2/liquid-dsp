@@ -45,9 +45,10 @@ VERSION   := @PACKAGE_VERSION@
 BUGREPORT := @PACKAGE_BUGREPORT@
 VARIANT = @spkg_variation@
 
+# Library path from configure to link to fec
 LD_LIBRARY_PATH = @LD_LIBRARY_PATH@
-export LD_LIBRARY_PATH
 
+# Necessary FEC info from configure
 FEC_INCLUDE = @FEC_INCLUDE@
 FEC_LIB = @FEC_LIB@
 
